@@ -50,12 +50,10 @@ stock_symbol = st.selectbox("Select a stock symbol:", options=list_of_stocks)
 # Function to fetch financial data
 def get_financial_data(stock_symbol):
     urls = {
-        urls = {
         "income_statement": f"https://stockanalysis.com/quote/psx/{stock_symbol}/financials/",
         "balance_sheet": f"https://stockanalysis.com/quote/psx/{stock_symbol}/financials/balance-sheet/",
         "cash_flow": f"https://stockanalysis.com/quote/psx/{stock_symbol}/financials/cash-flow-statement/",
         "ratios": f"https://stockanalysis.com/quote/psx/{stock_symbol}/financials/ratios/"
-    }
     }
     data = {}
     for key, url in urls.items():

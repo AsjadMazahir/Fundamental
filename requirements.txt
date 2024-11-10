@@ -4,3 +4,4 @@ requests
 seaborn
 lxml
 html5lib
+beautifulsoup4

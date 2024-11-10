@@ -3,3 +3,4 @@ matplotlib
 requests
 seaborn
 lxml
+html5lib

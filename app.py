@@ -108,19 +108,19 @@ def plot_dataframe(data):
             if key == 'income_statement':
                 for metric in income_metrics:
                     if metric in df.columns:
-                        st.bar_chart(df.set_index('Year')[metric])
+                        st.bar_chart(df, x='Year', y=metric)
             elif key == 'balance_sheet':
                 for metric in balance_metrics:
                     if metric in df.columns:
-                        st.bar_chart(df.set_index('Year')[metric])
+                        st.bar_chart(df, x='Year', y=metric)
             elif key == 'cash_flow':
                 for metric in cash_metrics:
                     if metric in df.columns:
-                        st.bar_chart(df.set_index('Year')[metric])
+                        st.bar_chart(df, x='Year', y=metric)
             elif key == 'ratios':
                 for metric in ratio_metrics:
                     if metric in df.columns:
-                        st.bar_chart(df.set_index('Year')[metric])
+                        st.bar_chart(df, x='Year', y=metric)
 
 # Streamlit sidebar for valuation method selection
 st.sidebar.header("Valuation Method")

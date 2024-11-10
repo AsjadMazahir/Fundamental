@@ -61,16 +61,36 @@ def get_financial_data(stock_symbol):
             headers = {
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
             }
-            response = requests.get(url, headers=headers)
-            data[key] = pd.read_html(response.text)[0]
-            data[key].columns = data[key].columns.droplevel(1)
-            data[key] = data[key].T
-            data[key].columns = data[key].iloc[0]
-            data[key] = data[key][1:]
-            data[key].replace('-', '0', inplace=True)
-            data[key] = data[key].replace('%', '', regex=True)
-            data[key] = data[key].astype(float)
-            data[key]['Year'] = ['TTM', '2024', '2023', '2022', '2021', '2020']
+            # Make the request with headers
+          response = requests.get(url, headers=headers)
+          data[key] = pd.read_html(response.text)[0]
+          # dropping the second header
+          data[key].columns = data[key].columns.droplevel(1)
+
+          # transpose the dataframe and reset the column
+          data[key] = data[key].T
+          data[key].columns = data[key].iloc[0]
+          data[key] = data[key][1:]
+
+          # Cleaning the data (for converting object data to numeric)
+          # Find all columns where '%' sign is present
+          percent_columns = [col for col in data[key].columns if data[key][col].astype(object).str.contains('%').any()]
+
+          # Add '%' sign to column names
+          data[key].rename(columns={col: f"{col} (%)" for col in percent_columns}, inplace=True)
+
+          # dropping last row that contains "Upgrade" in all columns
+          data[key].drop(index = data[key].index[-1], axis = 0, inplace = True)
+
+          # replacing empty data with 0
+          data[key].replace('-', '0', inplace=True)
+
+          # replacing % with ''
+          data[key] = data[key].replace('%', '', regex=True)
+          data[key].head()
+
+          data[key] = data[key].astype(float)
+          data[key]['Year'] = ['TTM', '2024', '2023', '2022', '2021', '2020']
         except Exception as e:
             st.error(f"Error retrieving data from {url}: {e}")
     return data
